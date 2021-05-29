@@ -238,6 +238,29 @@
       </tags>
   </entry>
   <entry>
+    <title>react中减少render臃肿的方法</title>
+    <url>/2019/03/07/react%E4%B8%AD%E5%87%8F%E5%B0%91render%E8%87%83%E8%82%BF%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>最近看了mobx的相关知识，对computed属性十分喜欢。</p>
+<p>想起在日常的项目开发中，react经常需要在render函数的开始部分进行一些props属性的计算，再将计算值用于渲染。一般会有以下画面：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; firstName, secondName &#125; = <span class="built_in">this</span>.props;</span><br><span class="line">    <span class="keyword">const</span> fullName = firstName + secondName;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;fullName&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>当业务逻辑复杂时可能会造成render函数十分的臃肿。也许我们会进行这样的优化：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  getFullName = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; firstName, secondName &#125; = <span class="built_in">this</span>.props;</span><br><span class="line">    <span class="keyword">return</span> firstName + secondName;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;this.getFullName()&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是我们实质上寻求的是一种computed的属性，将其封装成函数只是一种曲线救国的手段。<br>直到我在看frontend master的过程中，才发现原来可以使用class的get属性：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">get</span> <span class="title">fullName</span>() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; firstName, secondName &#125; = <span class="built_in">this</span>.props;</span><br><span class="line">    <span class="keyword">return</span> firstName + secondName;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;this.fullName&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>使用get属性实现computed的功能可以减少render函数的臃肿。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>设计</category>
+      </categories>
+      <tags>
+        <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何在Github Pages上部署create-react-app项目</title>
     <url>/2020/06/17/%E5%A6%82%E4%BD%95%E5%9C%A8Github-Pages%E4%B8%8A%E9%83%A8%E7%BD%B2create-react-app%E9%A1%B9%E7%9B%AE/</url>
     <content><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>笔者经常会用 create-react-app 做些 demo 项目。其中某些打算维护的项目，笔者会将其放到 github 上。但是此时的问题往往是，README 不能够很好的阐述项目的全貌，此时就需要将项目部署到线上，达到在线预览的效果。而 Github Pages 服务就可以很好的满足这个效果。</p>
@@ -280,29 +303,6 @@
       </categories>
       <tags>
         <tag>Github</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>react中减少render臃肿的方法</title>
-    <url>/2019/03/07/react%E4%B8%AD%E5%87%8F%E5%B0%91render%E8%87%83%E8%82%BF%E7%9A%84%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>最近看了mobx的相关知识，对computed属性十分喜欢。</p>
-<p>想起在日常的项目开发中，react经常需要在render函数的开始部分进行一些props属性的计算，再将计算值用于渲染。一般会有以下画面：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; firstName, secondName &#125; = <span class="built_in">this</span>.props;</span><br><span class="line">    <span class="keyword">const</span> fullName = firstName + secondName;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;fullName&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>当业务逻辑复杂时可能会造成render函数十分的臃肿。也许我们会进行这样的优化：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  getFullName = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; firstName, secondName &#125; = <span class="built_in">this</span>.props;</span><br><span class="line">    <span class="keyword">return</span> firstName + secondName;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;this.getFullName()&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但是我们实质上寻求的是一种computed的属性，将其封装成函数只是一种曲线救国的手段。<br>直到我在看frontend master的过程中，才发现原来可以使用class的get属性：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">get</span> <span class="title">fullName</span>() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; firstName, secondName &#125; = <span class="built_in">this</span>.props;</span><br><span class="line">    <span class="keyword">return</span> firstName + secondName;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;this.fullName&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>使用get属性实现computed的功能可以减少render函数的臃肿。</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-        <category>设计</category>
-      </categories>
-      <tags>
-        <tag>React</tag>
       </tags>
   </entry>
   <entry>
