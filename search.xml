@@ -87,53 +87,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ramda开发命令行工具生成多语言字典</title>
-    <url>/2019/11/29/ramda%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%AD%97%E5%85%B8/</url>
-    <content><![CDATA[<blockquote>
-<p>github 地址：<a href="https://github.com/Demian1996/translate">https://github.com/Demian1996/translate</a></p>
-</blockquote>
-<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>命令行工具 translate，给定中文字典，生成 google 翻译后的多语言文件</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">translate -f zh-CN.json -l en/ja</span><br></pre></td></tr></table></figure>
-
-<p>通过该命令生成多语言文件</p>
-<span id="more"></span>
-<h2 id="模块依赖"><a href="#模块依赖" class="headerlink" title="模块依赖"></a>模块依赖</h2><ul>
-<li>命令行工具<code>commander</code></li>
-<li>请求库<code>request</code></li>
-<li>函数库<code>ramda</code></li>
-</ul>
-<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><h4 id="目录总览"><a href="#目录总览" class="headerlink" title="目录总览"></a>目录总览</h4><p><img src="1.png" alt="1"></p>
-<p>bin 是业务逻辑处理文件</p>
-<p>package.json 配置依赖</p>
-<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><p>首先在<code>package.json</code>的文件中配置<code>bin</code>，指定文件路径和对应的命令名:</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;bin&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;translate&quot;</span>: <span class="string">&quot;./bin/index.js&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后在 bin 文件夹下新建入口文件 index.js，在文件首行配置</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br></pre></td></tr></table></figure>
-
-<p>这一行是指定使用 node 执行脚本文件</p>
-<p>然后执行命令<code>npm link</code>，就可以全局使用 translate 命令了。</p>
-<h4 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h4><p>使用模块 Commander 解析命令行参数：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">commander.option(<span class="string">&#x27;-f --file &lt;filename&gt;&#x27;</span>, <span class="string">&#x27;translate file&#x27;</span>, callback);</span><br><span class="line">commander.option(<span class="string">&#x27;-l --languages [languages]&#x27;</span>, <span class="string">&#x27;languages&#x27;</span>, <span class="string">&#x27;en&#x27;</span>);</span><br><span class="line">commander.parse(process.argv);</span><br></pre></td></tr></table></figure>
-
-<p>通过<code>-f</code>指定中文字典文件，通过<code>-l</code>指定目标语言，默认翻译为英文。<code>callback</code>主要是判断文件是否存在若不存在则返回 null，存在则返回 json 对象。后续可以通过 commander.file 获取 json 对象。</p>
-<h4 id="流程处理"><a href="#流程处理" class="headerlink" title="流程处理"></a>流程处理</h4><p>业务逻辑如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> generateDictionary = R.pipe(getLanguageArray, fetchTranslateApi, mapTranslation, generateFile);</span><br><span class="line">generateDictionary();</span><br></pre></td></tr></table></figure>
-
-<p>即获取目标语言数组-&gt;爬取 google 翻译 api-&gt;从返回值中筛选出翻译值-&gt;生成目标语言的 json 文件。</p>
-<p>详细流程见源码</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-        <category>工具开发</category>
-      </categories>
-      <tags>
-        <tag>Ramda</tag>
-        <tag>函数式编程</tag>
-        <tag>命令行工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo发布文章流程记录</title>
     <url>/2018/11/09/hexo%E5%8F%91%E5%B8%83%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p>新建文章</p>
@@ -235,6 +188,53 @@
       <tags>
         <tag>React</tag>
         <tag>Mobx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ramda开发命令行工具生成多语言字典</title>
+    <url>/2019/11/29/ramda%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%AD%97%E5%85%B8/</url>
+    <content><![CDATA[<blockquote>
+<p>github 地址：<a href="https://github.com/Demian1996/translate">https://github.com/Demian1996/translate</a></p>
+</blockquote>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>命令行工具 translate，给定中文字典，生成 google 翻译后的多语言文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">translate -f zh-CN.json -l en/ja</span><br></pre></td></tr></table></figure>
+
+<p>通过该命令生成多语言文件</p>
+<span id="more"></span>
+<h2 id="模块依赖"><a href="#模块依赖" class="headerlink" title="模块依赖"></a>模块依赖</h2><ul>
+<li>命令行工具<code>commander</code></li>
+<li>请求库<code>request</code></li>
+<li>函数库<code>ramda</code></li>
+</ul>
+<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><h4 id="目录总览"><a href="#目录总览" class="headerlink" title="目录总览"></a>目录总览</h4><p><img src="1.png" alt="1"></p>
+<p>bin 是业务逻辑处理文件</p>
+<p>package.json 配置依赖</p>
+<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><p>首先在<code>package.json</code>的文件中配置<code>bin</code>，指定文件路径和对应的命令名:</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;bin&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;translate&quot;</span>: <span class="string">&quot;./bin/index.js&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 bin 文件夹下新建入口文件 index.js，在文件首行配置</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br></pre></td></tr></table></figure>
+
+<p>这一行是指定使用 node 执行脚本文件</p>
+<p>然后执行命令<code>npm link</code>，就可以全局使用 translate 命令了。</p>
+<h4 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h4><p>使用模块 Commander 解析命令行参数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">commander.option(<span class="string">&#x27;-f --file &lt;filename&gt;&#x27;</span>, <span class="string">&#x27;translate file&#x27;</span>, callback);</span><br><span class="line">commander.option(<span class="string">&#x27;-l --languages [languages]&#x27;</span>, <span class="string">&#x27;languages&#x27;</span>, <span class="string">&#x27;en&#x27;</span>);</span><br><span class="line">commander.parse(process.argv);</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>-f</code>指定中文字典文件，通过<code>-l</code>指定目标语言，默认翻译为英文。<code>callback</code>主要是判断文件是否存在若不存在则返回 null，存在则返回 json 对象。后续可以通过 commander.file 获取 json 对象。</p>
+<h4 id="流程处理"><a href="#流程处理" class="headerlink" title="流程处理"></a>流程处理</h4><p>业务逻辑如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> generateDictionary = R.pipe(getLanguageArray, fetchTranslateApi, mapTranslation, generateFile);</span><br><span class="line">generateDictionary();</span><br></pre></td></tr></table></figure>
+
+<p>即获取目标语言数组-&gt;爬取 google 翻译 api-&gt;从返回值中筛选出翻译值-&gt;生成目标语言的 json 文件。</p>
+<p>详细流程见源码</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>工具开发</category>
+      </categories>
+      <tags>
+        <tag>Ramda</tag>
+        <tag>函数式编程</tag>
+        <tag>命令行工具</tag>
       </tags>
   </entry>
   <entry>
