@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>React父组件和子组件解耦方案</title>
+    <url>/2019/03/24/React%E7%88%B6%E7%BB%84%E4%BB%B6%E5%92%8C%E5%AD%90%E7%BB%84%E4%BB%B6%E8%A7%A3%E8%80%A6%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>业务中经常会遇到抽离组件的情况，那么父组件和子组件之间该怎么解耦呢？</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>比如实现一个 List 组件：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> Item = <span class="function">(<span class="params">&#123; text &#125;</span>) =&gt;</span> (<span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;text&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">List</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  state = &#123;</span><br><span class="line">    <span class="attr">list</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.state.list.map(<span class="function"><span class="params">x</span> =&gt;</span> <span class="xml"><span class="tag">&lt;<span class="name">Item</span> <span class="attr">text</span>=<span class="string">&#123;x&#125;</span> /&gt;</span></span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>我们封装父组件经常会直接用到这种方法，但是如果该父组件是一个公共组件，那么当我们在外部引用它时，它对于我们而言其实是一个黑盒。父组件和子组件通过 list 牢牢的耦和在了一起。</p>
+<span id="more"></span>
+
+<h2 id="解耦方案"><a href="#解耦方案" class="headerlink" title="解耦方案"></a>解耦方案</h2><h3 id="一、使用-render-props"><a href="#一、使用-render-props" class="headerlink" title="一、使用 render props"></a>一、使用 render props</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">List</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  state = &#123;</span><br><span class="line">    <span class="attr">list</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.props.children(<span class="built_in">this</span>.state.list);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-- jsx</span><br><span class="line"></span><br><span class="line">&lt;List&gt;</span><br><span class="line">  &#123;<span class="function">(<span class="params">list</span>) =&gt;</span> list.map(<span class="function"><span class="params">x</span> =&gt;</span> <span class="xml"><span class="tag">&lt;<span class="name">Item</span> <span class="attr">text</span>=<span class="string">&#123;x&#125;</span> /&gt;</span></span>)&#125;</span><br><span class="line">&lt;/List&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，通过 render props 的设计实现了父组件和子组件之间的解耦。</p>
+<h3 id="二、Compound-Component"><a href="#二、Compound-Component" class="headerlink" title="二、Compound Component"></a>二、Compound Component</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">List</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  state = &#123;</span><br><span class="line">    <span class="attr">list</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      React.Children.map(</span><br><span class="line">        <span class="built_in">this</span>.props.children,</span><br><span class="line">        <span class="function">(<span class="params">child, i</span>) =&gt;</span> React.cloneElement(child, &#123;</span><br><span class="line">          <span class="attr">text</span>: state.list[i]</span><br><span class="line">        &#125;)</span><br><span class="line">      );</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">--jsx</span><br><span class="line"></span><br><span class="line">&lt;List&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Item</span> /&gt;</span></span></span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Item</span> /&gt;</span></span></span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Item</span> /&gt;</span></span></span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Item</span> /&gt;</span></span></span><br><span class="line">&lt;/List&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 compound component 也能实现父子组件解耦，只是在这里可能不是那么完美。其实 compound component 的应用远不止如此，读者可以自行挖掘。😃</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>compound component 和 render props 均实现了父子组件的解耦，并且父组件对于使用者来说也不再是一个黑盒。</p>
+<h3 id="引申"><a href="#引申" class="headerlink" title="引申"></a>引申</h3><p>将父子组件解耦后，父子组件之间只需要接口达成一致便能完成使用。此时若将单元测试覆盖于测试用例，具体又有什么便利之处呢？👾</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>设计</category>
+      </categories>
+      <tags>
+        <tag>React</tag>
+        <tag>组件设计</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo发布文章流程记录</title>
+    <url>/2018/11/09/hexo%E5%8F%91%E5%B8%83%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>新建文章</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo new post &quot;title&quot;</span><br></pre></td></tr></table></figure>
+
+<p>生成静态网页</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p>本地预览</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>同步至 github 服务器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Create-react-app中使用装饰器语法</title>
     <url>/2019/03/01/Create-react-app%E4%B8%AD%E4%BD%BF%E7%94%A8%E8%A3%85%E9%A5%B0%E5%99%A8%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[<h3 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h3><p>想要在 create-react-app 中使用 mobx，因为装饰器模式看起来简单，所以想让 create-react-app 支持装饰器语法。</p>
@@ -56,56 +106,6 @@
         <tag>Babel</tag>
         <tag>Mobx</tag>
         <tag>装饰器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>React父组件和子组件解耦方案</title>
-    <url>/2019/03/24/React%E7%88%B6%E7%BB%84%E4%BB%B6%E5%92%8C%E5%AD%90%E7%BB%84%E4%BB%B6%E8%A7%A3%E8%80%A6%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>业务中经常会遇到抽离组件的情况，那么父组件和子组件之间该怎么解耦呢？</p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>比如实现一个 List 组件：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> Item = <span class="function">(<span class="params">&#123; text &#125;</span>) =&gt;</span> (<span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;text&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">List</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  state = &#123;</span><br><span class="line">    <span class="attr">list</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.state.list.map(<span class="function"><span class="params">x</span> =&gt;</span> <span class="xml"><span class="tag">&lt;<span class="name">Item</span> <span class="attr">text</span>=<span class="string">&#123;x&#125;</span> /&gt;</span></span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>我们封装父组件经常会直接用到这种方法，但是如果该父组件是一个公共组件，那么当我们在外部引用它时，它对于我们而言其实是一个黑盒。父组件和子组件通过 list 牢牢的耦和在了一起。</p>
-<span id="more"></span>
-
-<h2 id="解耦方案"><a href="#解耦方案" class="headerlink" title="解耦方案"></a>解耦方案</h2><h3 id="一、使用-render-props"><a href="#一、使用-render-props" class="headerlink" title="一、使用 render props"></a>一、使用 render props</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">List</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  state = &#123;</span><br><span class="line">    <span class="attr">list</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.props.children(<span class="built_in">this</span>.state.list);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-- jsx</span><br><span class="line"></span><br><span class="line">&lt;List&gt;</span><br><span class="line">  &#123;<span class="function">(<span class="params">list</span>) =&gt;</span> list.map(<span class="function"><span class="params">x</span> =&gt;</span> <span class="xml"><span class="tag">&lt;<span class="name">Item</span> <span class="attr">text</span>=<span class="string">&#123;x&#125;</span> /&gt;</span></span>)&#125;</span><br><span class="line">&lt;/List&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>可以看到，通过 render props 的设计实现了父组件和子组件之间的解耦。</p>
-<h3 id="二、Compound-Component"><a href="#二、Compound-Component" class="headerlink" title="二、Compound Component"></a>二、Compound Component</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">List</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  state = &#123;</span><br><span class="line">    <span class="attr">list</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      React.Children.map(</span><br><span class="line">        <span class="built_in">this</span>.props.children,</span><br><span class="line">        <span class="function">(<span class="params">child, i</span>) =&gt;</span> React.cloneElement(child, &#123;</span><br><span class="line">          <span class="attr">text</span>: state.list[i]</span><br><span class="line">        &#125;)</span><br><span class="line">      );</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">--jsx</span><br><span class="line"></span><br><span class="line">&lt;List&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Item</span> /&gt;</span></span></span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Item</span> /&gt;</span></span></span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Item</span> /&gt;</span></span></span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Item</span> /&gt;</span></span></span><br><span class="line">&lt;/List&gt;</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 compound component 也能实现父子组件解耦，只是在这里可能不是那么完美。其实 compound component 的应用远不止如此，读者可以自行挖掘。😃</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>compound component 和 render props 均实现了父子组件的解耦，并且父组件对于使用者来说也不再是一个黑盒。</p>
-<h3 id="引申"><a href="#引申" class="headerlink" title="引申"></a>引申</h3><p>将父子组件解耦后，父子组件之间只需要接口达成一致便能完成使用。此时若将单元测试覆盖于测试用例，具体又有什么便利之处呢？👾</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-        <category>设计</category>
-      </categories>
-      <tags>
-        <tag>React</tag>
-        <tag>组件设计</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo发布文章流程记录</title>
-    <url>/2018/11/09/hexo%E5%8F%91%E5%B8%83%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>新建文章</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo new post &quot;title&quot;</span><br></pre></td></tr></table></figure>
-
-<p>生成静态网页</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<p>本地预览</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p>同步至 github 服务器</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -188,53 +188,6 @@
       <tags>
         <tag>React</tag>
         <tag>Mobx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ramda开发命令行工具生成多语言字典</title>
-    <url>/2019/11/29/ramda%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%AD%97%E5%85%B8/</url>
-    <content><![CDATA[<blockquote>
-<p>github 地址：<a href="https://github.com/Demian1996/translate">https://github.com/Demian1996/translate</a></p>
-</blockquote>
-<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>命令行工具 translate，给定中文字典，生成 google 翻译后的多语言文件</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">translate -f zh-CN.json -l en/ja</span><br></pre></td></tr></table></figure>
-
-<p>通过该命令生成多语言文件</p>
-<span id="more"></span>
-<h2 id="模块依赖"><a href="#模块依赖" class="headerlink" title="模块依赖"></a>模块依赖</h2><ul>
-<li>命令行工具<code>commander</code></li>
-<li>请求库<code>request</code></li>
-<li>函数库<code>ramda</code></li>
-</ul>
-<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><h4 id="目录总览"><a href="#目录总览" class="headerlink" title="目录总览"></a>目录总览</h4><p><img src="1.png" alt="1"></p>
-<p>bin 是业务逻辑处理文件</p>
-<p>package.json 配置依赖</p>
-<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><p>首先在<code>package.json</code>的文件中配置<code>bin</code>，指定文件路径和对应的命令名:</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;bin&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;translate&quot;</span>: <span class="string">&quot;./bin/index.js&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后在 bin 文件夹下新建入口文件 index.js，在文件首行配置</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br></pre></td></tr></table></figure>
-
-<p>这一行是指定使用 node 执行脚本文件</p>
-<p>然后执行命令<code>npm link</code>，就可以全局使用 translate 命令了。</p>
-<h4 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h4><p>使用模块 Commander 解析命令行参数：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">commander.option(<span class="string">&#x27;-f --file &lt;filename&gt;&#x27;</span>, <span class="string">&#x27;translate file&#x27;</span>, callback);</span><br><span class="line">commander.option(<span class="string">&#x27;-l --languages [languages]&#x27;</span>, <span class="string">&#x27;languages&#x27;</span>, <span class="string">&#x27;en&#x27;</span>);</span><br><span class="line">commander.parse(process.argv);</span><br></pre></td></tr></table></figure>
-
-<p>通过<code>-f</code>指定中文字典文件，通过<code>-l</code>指定目标语言，默认翻译为英文。<code>callback</code>主要是判断文件是否存在若不存在则返回 null，存在则返回 json 对象。后续可以通过 commander.file 获取 json 对象。</p>
-<h4 id="流程处理"><a href="#流程处理" class="headerlink" title="流程处理"></a>流程处理</h4><p>业务逻辑如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> generateDictionary = R.pipe(getLanguageArray, fetchTranslateApi, mapTranslation, generateFile);</span><br><span class="line">generateDictionary();</span><br></pre></td></tr></table></figure>
-
-<p>即获取目标语言数组-&gt;爬取 google 翻译 api-&gt;从返回值中筛选出翻译值-&gt;生成目标语言的 json 文件。</p>
-<p>详细流程见源码</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-        <category>工具开发</category>
-      </categories>
-      <tags>
-        <tag>Ramda</tag>
-        <tag>函数式编程</tag>
-        <tag>命令行工具</tag>
       </tags>
   </entry>
   <entry>
@@ -343,6 +296,53 @@
         <tag>React</tag>
         <tag>组件设计</tag>
         <tag>React Hook</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ramda开发命令行工具生成多语言字典</title>
+    <url>/2019/11/29/ramda%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%AD%97%E5%85%B8/</url>
+    <content><![CDATA[<blockquote>
+<p>github 地址：<a href="https://github.com/Demian1996/translate">https://github.com/Demian1996/translate</a></p>
+</blockquote>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>命令行工具 translate，给定中文字典，生成 google 翻译后的多语言文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">translate -f zh-CN.json -l en/ja</span><br></pre></td></tr></table></figure>
+
+<p>通过该命令生成多语言文件</p>
+<span id="more"></span>
+<h2 id="模块依赖"><a href="#模块依赖" class="headerlink" title="模块依赖"></a>模块依赖</h2><ul>
+<li>命令行工具<code>commander</code></li>
+<li>请求库<code>request</code></li>
+<li>函数库<code>ramda</code></li>
+</ul>
+<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><h4 id="目录总览"><a href="#目录总览" class="headerlink" title="目录总览"></a>目录总览</h4><p><img src="1.png" alt="1"></p>
+<p>bin 是业务逻辑处理文件</p>
+<p>package.json 配置依赖</p>
+<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><p>首先在<code>package.json</code>的文件中配置<code>bin</code>，指定文件路径和对应的命令名:</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;bin&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;translate&quot;</span>: <span class="string">&quot;./bin/index.js&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 bin 文件夹下新建入口文件 index.js，在文件首行配置</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br></pre></td></tr></table></figure>
+
+<p>这一行是指定使用 node 执行脚本文件</p>
+<p>然后执行命令<code>npm link</code>，就可以全局使用 translate 命令了。</p>
+<h4 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h4><p>使用模块 Commander 解析命令行参数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">commander.option(<span class="string">&#x27;-f --file &lt;filename&gt;&#x27;</span>, <span class="string">&#x27;translate file&#x27;</span>, callback);</span><br><span class="line">commander.option(<span class="string">&#x27;-l --languages [languages]&#x27;</span>, <span class="string">&#x27;languages&#x27;</span>, <span class="string">&#x27;en&#x27;</span>);</span><br><span class="line">commander.parse(process.argv);</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>-f</code>指定中文字典文件，通过<code>-l</code>指定目标语言，默认翻译为英文。<code>callback</code>主要是判断文件是否存在若不存在则返回 null，存在则返回 json 对象。后续可以通过 commander.file 获取 json 对象。</p>
+<h4 id="流程处理"><a href="#流程处理" class="headerlink" title="流程处理"></a>流程处理</h4><p>业务逻辑如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> generateDictionary = R.pipe(getLanguageArray, fetchTranslateApi, mapTranslation, generateFile);</span><br><span class="line">generateDictionary();</span><br></pre></td></tr></table></figure>
+
+<p>即获取目标语言数组-&gt;爬取 google 翻译 api-&gt;从返回值中筛选出翻译值-&gt;生成目标语言的 json 文件。</p>
+<p>详细流程见源码</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>工具开发</category>
+      </categories>
+      <tags>
+        <tag>Ramda</tag>
+        <tag>函数式编程</tag>
+        <tag>命令行工具</tag>
       </tags>
   </entry>
   <entry>
