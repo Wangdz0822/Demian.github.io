@@ -6,7 +6,7 @@
   <link href="http://demian1996.github.io/atom.xml" rel="self"/>
   
   <link href="http://demian1996.github.io/"/>
-  <updated>2021-05-29T03:26:50.362Z</updated>
+  <updated>2021-05-30T06:41:13.436Z</updated>
   <id>http://demian1996.github.io/</id>
   
   <author>
@@ -21,11 +21,10 @@
     <link href="http://demian1996.github.io/2020/08/14/%E9%85%8D%E7%BD%AE%E9%A1%B9%E7%9B%AEts%E5%92%8Chook%E7%9A%84eslint%E7%BA%A6%E6%9D%9F/"/>
     <id>http://demian1996.github.io/2020/08/14/%E9%85%8D%E7%BD%AE%E9%A1%B9%E7%9B%AEts%E5%92%8Chook%E7%9A%84eslint%E7%BA%A6%E6%9D%9F/</id>
     <published>2020-08-14T01:15:14.000Z</published>
-    <updated>2021-05-29T03:26:50.362Z</updated>
+    <updated>2021-05-30T06:41:13.436Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;teacher-web 端之前用的是 tslint，考虑到 typescript 团队已经停止维护 tslint，且 Eslint 规范更多，所以将教师空间中的 ts 代码检查整合到 Eslint 中。整理此份文档，方便后续参照。&lt;/p&gt;
-&lt;p&gt;鉴于项目中普遍用的均为 alloyTeam 的配置规范，所以最终决定 js 和 ts 文件的 eslint 配置均统一使用 alloyTeam 的配置规范。详细地址见&lt;a href=&quot;https://github.com/AlloyTeam/eslint-config-alloy&quot;&gt;eslint-config-alloy&lt;/a&gt;&lt;/p&gt;</summary>
+    <summary type="html">本文主要介绍如何在前端项目中搭配使用 eslint 和腾讯封装的 eslint-config，来对项目中的 typescript 和 react hook 进行语法检测。</summary>
     
     
     
@@ -47,10 +46,10 @@
     <link href="http://demian1996.github.io/2020/08/09/%E5%B0%81%E8%A3%85useModal%E5%A4%8D%E7%94%A8%E5%85%AC%E5%85%B1%E5%BC%B9%E7%AA%97%E7%BB%84%E4%BB%B6/"/>
     <id>http://demian1996.github.io/2020/08/09/%E5%B0%81%E8%A3%85useModal%E5%A4%8D%E7%94%A8%E5%85%AC%E5%85%B1%E5%BC%B9%E7%AA%97%E7%BB%84%E4%BB%B6/</id>
     <published>2020-08-09T12:00:09.000Z</published>
-    <updated>2021-05-29T03:26:46.724Z</updated>
+    <updated>2021-05-30T06:44:30.545Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;在常规的业务开发中，经常会用到 Modal 组件。当笔者在开发实际项目时，业务需求要求我在同一个页面分别使用 2-3 种弹窗。理论来说此时只需要使用一个 Modal 组件，定制不同内容即可。但是痛苦常常来源于生活，由于团队人员变动、公共组件管理不够规范、重复造轮子等各种原因，我们往往需要接入各种不同种类的弹窗组件，比如在下面的代码中，我使用的 ExitModal 和 DeleteModal 就出自不同人之手：&lt;/p&gt;</summary>
+    <summary type="html">本文主要介绍如何封装一个自定义的useModal hook，使得项目中各类弹窗组件的使用方式改为命令式的呼起。</summary>
     
     
     
@@ -72,10 +71,10 @@
     <link href="http://demian1996.github.io/2020/06/17/%E5%A6%82%E4%BD%95%E5%9C%A8Github-Pages%E4%B8%8A%E9%83%A8%E7%BD%B2create-react-app%E9%A1%B9%E7%9B%AE/"/>
     <id>http://demian1996.github.io/2020/06/17/%E5%A6%82%E4%BD%95%E5%9C%A8Github-Pages%E4%B8%8A%E9%83%A8%E7%BD%B2create-react-app%E9%A1%B9%E7%9B%AE/</id>
     <published>2020-06-17T12:00:09.000Z</published>
-    <updated>2021-05-29T03:26:55.012Z</updated>
+    <updated>2021-05-30T06:45:49.393Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;笔者经常会用 create-react-app 做些 demo 项目。其中某些打算维护的项目，笔者会将其放到 github 上。但是此时的问题往往是，README 不能够很好的阐述项目的全貌，此时就需要将项目部署到线上，达到在线预览的效果。而 Github Pages 服务就可以很好的满足这个效果。&lt;/p&gt;</summary>
+    <summary type="html">本文主要介绍如何利用Github Pages，简单方便地将自己开发的静态页面部署到线上使用。</summary>
     
     
     
@@ -93,16 +92,10 @@
     <link href="http://demian1996.github.io/2019/11/29/ramda%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%AD%97%E5%85%B8/"/>
     <id>http://demian1996.github.io/2019/11/29/ramda%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%AD%97%E5%85%B8/</id>
     <published>2019-11-29T08:05:53.000Z</published>
-    <updated>2021-05-29T03:27:08.750Z</updated>
+    <updated>2021-05-30T06:50:26.539Z</updated>
     
     
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;github 地址：&lt;a href=&quot;https://github.com/Demian1996/translate&quot;&gt;https://github.com/Demian1996/translate&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h1&gt;&lt;p&gt;命令行工具 translate，给定中文字典，生成 google 翻译后的多语言文件&lt;/p&gt;
-&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;translate -f zh-CN.json -l en/ja&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;通过该命令生成多语言文件&lt;/p&gt;</summary>
+    <summary type="html">本文主要介绍如何利用 ramda 开发一款本地生成多语言文件的命令行工具。</summary>
     
     
     
@@ -124,22 +117,10 @@
     <link href="http://demian1996.github.io/2019/04/23/mobx%E5%88%9D%E6%8E%A2/"/>
     <id>http://demian1996.github.io/2019/04/23/mobx%E5%88%9D%E6%8E%A2/</id>
     <published>2019-04-22T16:39:08.000Z</published>
-    <updated>2021-05-29T03:27:04.064Z</updated>
+    <updated>2021-05-30T06:52:27.184Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;本文是笔者在看了 frontendmaster 的状态管理课程之后，对 mobx 进行的初步学习的总结。&lt;/p&gt;
-&lt;h2 id=&quot;二、Mobx-简介&quot;&gt;&lt;a href=&quot;#二、Mobx-简介&quot; class=&quot;headerlink&quot; title=&quot;二、Mobx 简介&quot;&gt;&lt;/a&gt;二、Mobx 简介&lt;/h2&gt;&lt;p&gt;mobx 是社区内使用的较为常见的一种状态管理库，mobx 官网称其&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;通过透明的函数响应式编程(transparently applying functional reactive programming - TFRP)使得状态管理变得简单和可扩展&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;mobx 主要有以下几个核心特性：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Observable State（可观察状态）&lt;/li&gt;
-&lt;li&gt;Computed Values（计算属性）&lt;/li&gt;
-&lt;li&gt;Reactions（反应，完成页面渲染、日志打印）&lt;/li&gt;
-&lt;li&gt;Actions（动作）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;以下介绍将结合部分 mobx 代码，代码地址： &lt;a href=&quot;https://jsbin.com/demelo/19/edit?html,js,console,output&quot;&gt;示例代码&lt;/a&gt;&lt;/p&gt;</summary>
+    <summary type="html">本文主要介绍在 Frontend Master 网站上学到的 mobx 的相关特性。</summary>
     
     
     
@@ -159,14 +140,10 @@
     <link href="http://demian1996.github.io/2019/03/24/React%E7%88%B6%E7%BB%84%E4%BB%B6%E5%92%8C%E5%AD%90%E7%BB%84%E4%BB%B6%E8%A7%A3%E8%80%A6%E6%96%B9%E6%A1%88/"/>
     <id>http://demian1996.github.io/2019/03/24/React%E7%88%B6%E7%BB%84%E4%BB%B6%E5%92%8C%E5%AD%90%E7%BB%84%E4%BB%B6%E8%A7%A3%E8%80%A6%E6%96%B9%E6%A1%88/</id>
     <published>2019-03-24T14:01:12.000Z</published>
-    <updated>2021-05-29T03:27:12.047Z</updated>
+    <updated>2021-05-30T06:51:01.629Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;业务中经常会遇到抽离组件的情况，那么父组件和子组件之间该怎么解耦呢？&lt;/p&gt;
-&lt;h2 id=&quot;案例&quot;&gt;&lt;a href=&quot;#案例&quot; class=&quot;headerlink&quot; title=&quot;案例&quot;&gt;&lt;/a&gt;案例&lt;/h2&gt;&lt;p&gt;比如实现一个 List 组件：&lt;/p&gt;
-&lt;figure class=&quot;highlight jsx&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; Item = &lt;span class=&quot;function&quot;&gt;(&lt;span class=&quot;params&quot;&gt;&amp;#123; text &amp;#125;&lt;/span&gt;) =&amp;gt;&lt;/span&gt; (&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&amp;#123;text&amp;#125;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;List&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;React&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;Component&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  state = &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;list&lt;/span&gt;: [&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;title&quot;&gt;render&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;this&lt;/span&gt;.state.list.map(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;params&quot;&gt;x&lt;/span&gt; =&amp;gt;&lt;/span&gt; &lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;Item&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;text&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&amp;#123;x&amp;#125;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h3&gt;&lt;p&gt;我们封装父组件经常会直接用到这种方法，但是如果该父组件是一个公共组件，那么当我们在外部引用它时，它对于我们而言其实是一个黑盒。父组件和子组件通过 list 牢牢的耦和在了一起。&lt;/p&gt;</summary>
+    <summary type="html">本文主要介绍在 React 中的几种将父组件和子组件解耦的方案。</summary>
     
     
     
@@ -186,7 +163,7 @@
     <link href="http://demian1996.github.io/2019/03/07/react%E4%B8%AD%E5%87%8F%E5%B0%91render%E8%87%83%E8%82%BF%E7%9A%84%E6%96%B9%E6%B3%95/"/>
     <id>http://demian1996.github.io/2019/03/07/react%E4%B8%AD%E5%87%8F%E5%B0%91render%E8%87%83%E8%82%BF%E7%9A%84%E6%96%B9%E6%B3%95/</id>
     <published>2019-03-07T15:25:07.000Z</published>
-    <updated>2021-05-29T03:26:44.228Z</updated>
+    <updated>2021-05-30T06:51:07.299Z</updated>
     
     
     <summary type="html">&lt;p&gt;最近看了mobx的相关知识，对computed属性十分喜欢。&lt;/p&gt;
@@ -209,16 +186,10 @@
     <link href="http://demian1996.github.io/2019/03/01/Create-react-app%E4%B8%AD%E4%BD%BF%E7%94%A8%E8%A3%85%E9%A5%B0%E5%99%A8%E8%AF%AD%E6%B3%95/"/>
     <id>http://demian1996.github.io/2019/03/01/Create-react-app%E4%B8%AD%E4%BD%BF%E7%94%A8%E8%A3%85%E9%A5%B0%E5%99%A8%E8%AF%AD%E6%B3%95/</id>
     <published>2019-02-28T18:29:45.000Z</published>
-    <updated>2021-05-29T05:21:31.992Z</updated>
+    <updated>2021-05-30T06:48:26.991Z</updated>
     
     
-    <summary type="html">&lt;h3 id=&quot;背景：&quot;&gt;&lt;a href=&quot;#背景：&quot; class=&quot;headerlink&quot; title=&quot;背景：&quot;&gt;&lt;/a&gt;背景：&lt;/h3&gt;&lt;p&gt;想要在 create-react-app 中使用 mobx，因为装饰器模式看起来简单，所以想让 create-react-app 支持装饰器语法。&lt;/p&gt;
-&lt;h3 id=&quot;项目搭建&quot;&gt;&lt;a href=&quot;#项目搭建&quot; class=&quot;headerlink&quot; title=&quot;项目搭建&quot;&gt;&lt;/a&gt;项目搭建&lt;/h3&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;create-react-app test-decorator&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;npm install -s mobx-react mobx&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;安装完毕后，若直接在 class 中使用 mobx 的@observer 语法&lt;/p&gt;
-&lt;figure class=&quot;highlight jsx&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; &amp;#123;@observer&amp;#125; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;#x27;mobx-react&amp;#x27;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@observer&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Demo&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;此时会报编译错误&lt;/p&gt;</summary>
+    <summary type="html">本文主要介绍了如何在cra项目中拓展使用装饰器语法，从而支持mobx的装饰器。</summary>
     
     
     
@@ -242,7 +213,7 @@
     <link href="http://demian1996.github.io/2018/11/09/hexo%E5%8F%91%E5%B8%83%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E8%AE%B0%E5%BD%95/"/>
     <id>http://demian1996.github.io/2018/11/09/hexo%E5%8F%91%E5%B8%83%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E8%AE%B0%E5%BD%95/</id>
     <published>2018-11-09T02:19:27.000Z</published>
-    <updated>2021-05-29T03:12:33.565Z</updated>
+    <updated>2021-05-30T06:48:38.772Z</updated>
     
     
       
