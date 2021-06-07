@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Butterfly主题优化首页大图加载效果</title>
+    <url>/2021/06/05/Butterfly%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96%E9%A6%96%E9%A1%B5%E5%A4%A7%E5%9B%BE%E5%8A%A0%E8%BD%BD%E6%95%88%E6%9E%9C/</url>
+    <content><![CDATA[<h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>博客从 <code>next</code> 主题迁移到了 <code>butterfly</code> 主题，给首页换上了好看的大图。但是实际发布到 <code>github</code> 后发现网速较慢时，图片是自上到下慢慢加载的，很不美观。</p>
+<p><img src="1.gif" alt="1"></p>
+<p>调研了一圈别人 <code>butterfly</code> 主题的博客，发现主要是以<strong>增加全局的加载动画</strong>和<strong>去掉首图</strong>这两种方案为主。我一方面不想让加载动画覆盖于整个博客上，另一方面想保留首图效果。所以最终还是想以优化首图加载效果为主。一开始想用渐进式图片的方案，可即使将图片改为 <a href="https://www.zhangxinxu.com/wordpress/2013/01/progressive-jpeg-image-and-so-on/">progressive jpeg</a> ，加载效果也不够理想，马赛克着实影响体验。而之前逛 <code>medium</code> 时，有研究过 <code>medium</code> 的图片加载方案，于是参考其方案封装了对应的渐进式加载模块，优化了整体的加载效果。效果如下：(gif 可能有失真，可回到本博客首页减小网速后体验实际效果)</p>
+<p><img src="2.gif" alt="2"></p>
+<p>上述代码已经简单地抽离为 <code>gist</code>，详细地址见：</p>
+<blockquote>
+<p><a href="https://gist.github.com/Demian1996/d7ae29cb39b4091e6a64e05984dd475b">https://gist.github.com/Demian1996/d7ae29cb39b4091e6a64e05984dd475b</a></p>
+</blockquote>
+<h2 id="二、模块接入"><a href="#二、模块接入" class="headerlink" title="二、模块接入"></a>二、模块接入</h2><h3 id="1、新建和注入脚本"><a href="#1、新建和注入脚本" class="headerlink" title="1、新建和注入脚本"></a>1、新建和注入脚本</h3><p>在 <code>source</code> 下新建 <code>progressive</code> 目录，新建 <code>index.js</code> 和 <code>index.css</code> 文件。</p>
+<p><img src="3.png" alt="3"></p>
+<h3 id="2、修改-butterfly-配置"><a href="#2、修改-butterfly-配置" class="headerlink" title="2、修改 butterfly 配置"></a>2、修改 butterfly 配置</h3><p>在配置文件中修改配置，使得网页加载时能够自动加载脚本文件和样式文件</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">inject:</span></span><br><span class="line">  <span class="attr">head:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&lt;link</span> <span class="string">rel=&quot;stylesheet&quot;</span> <span class="string">href=&quot;/common/progressive/index.css&quot;&gt;</span></span><br><span class="line">  <span class="attr">bottom:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;/common/progressive/index.js&quot;&gt;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3、接入-gist-代码"><a href="#3、接入-gist-代码" class="headerlink" title="3、接入 gist 代码"></a>3、接入 gist 代码</h3><p>将上面 <code>gist</code> 中的 <code>index.js</code> 和 <code>index.css</code> 中的代码分别拷入 <code>progressive</code> 下的文件中。然后如下方例子那样调用即可。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 传入小图和大图的地址;</span></span><br><span class="line"><span class="keyword">const</span> loader = <span class="keyword">new</span> ProgressiveLoad(<span class="string">&#x27;/common/blog_bg_min.png&#x27;</span>, <span class="string">&#x27;/common/blog_bg.png&#x27;</span>);</span><br><span class="line"><span class="comment">// 传入header节点;</span></span><br><span class="line"><span class="keyword">const</span> target = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;page-header&#x27;</span>);</span><br><span class="line"><span class="comment">// 将背景插入到header节点下的第一个节点</span></span><br><span class="line"><span class="keyword">if</span> (target.children[<span class="number">0</span>]) &#123;</span><br><span class="line">  target.insertBefore(loader.container, target.children[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于不同主题下，页面的 <code>dom</code> 结构和 <code>header</code> 节点的 <code>id</code> 可能不同，所以在使用模块时，需要自行修改对应的传参。</p>
+<h2 id="三、原理简介"><a href="#三、原理简介" class="headerlink" title="三、原理简介"></a>三、原理简介</h2><p>该渐进加载模块简化了 <code>medium</code> 的加载逻辑，简化后的流程图如下：</p>
+<p><img src="4.png" alt="4"></p>
+<p>下面将分步骤讲解</p>
+<h3 id="1、初始化"><a href="#1、初始化" class="headerlink" title="1、初始化"></a>1、初始化</h3><p>首先要完成该模块的 <code>dom</code> 结构，如下所示：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 渐进加载要插入的部分 --&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 容器，存放两张背景图 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;pl-container&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 小图背景 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-image: url(小图地址);&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 大图背景 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-image: url(大图地址);&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- end --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span>博客标题<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时两张背景图的 <code>visible</code> 都设置为 <code>false</code>，默认在加载完成前不可见。另外，小图还要设置高斯模糊的遮罩样式，处理失真问题：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.pl-blur</span> &#123;</span><br><span class="line">  <span class="comment">/* 小图锯齿多，增加高斯模糊 */</span></span><br><span class="line">  <span class="attribute">filter</span>: <span class="built_in">blur</span>(<span class="number">50px</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、加载小图"><a href="#2、加载小图" class="headerlink" title="2、加载小图"></a>2、加载小图</h3><p>首先初始化 <code>image</code> 对象，并绑定 <code>onload</code> 事件</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProgressiveLoad</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">initTpl</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="built_in">this</span>.smallImg = <span class="keyword">new</span> Image();</span><br><span class="line">    <span class="built_in">this</span>.smallImg.onload = <span class="built_in">this</span>._onSmallLoaded.bind(<span class="built_in">this</span>);</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">_onSmallLoaded</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 加载完成时，将小图的 dom 节点设置为可见。通过修改 backgroundImage 的值，让该 dom 的背景图指向已经加载完成的小图。</span></span><br><span class="line">    <span class="built_in">this</span>.smallStage.classList.add(<span class="string">&#x27;pl-visible&#x27;</span>);</span><br><span class="line">    <span class="built_in">this</span>.smallStage.style.backgroundImage = <span class="string">`url(&#x27;<span class="subst">$&#123;<span class="built_in">this</span>.smallSrc&#125;</span>&#x27;)`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后通过设置 <code>image</code> 对象的 <code>src</code> 值，触发 <code>image</code> 对象加载图片。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProgressiveLoad</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">progressiveLoad</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.smallImg.src = <span class="built_in">this</span>.smallSrc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后执行 <code>onload</code> 完成事件，展示压缩过的背景图。</p>
+<h3 id="3、加载大图"><a href="#3、加载大图" class="headerlink" title="3、加载大图"></a>3、加载大图</h3><p>流程基本同小图一致。由于大图的 <code>dom</code> 节点在小图之后且两者均为绝对定位，所以大图的层级在小图之上。当大图加载完成后，只需要修改大图的 <code>visible</code> 状态，即可展示最终的超清大图。</p>
+<h2 id="四、可优化点"><a href="#四、可优化点" class="headerlink" title="四、可优化点"></a>四、可优化点</h2><p>从上面优化后的实际效果图会发现，在网速特别慢的情况下，小图也需要几秒加载时间，所以最开始会显示几秒的默认背景色。</p>
+<p>那么如何跳过该阶段，直接显示小图呢？</p>
+<p>也很简单，做一下取舍即可。首先，将背景色设置为 <code>none</code> 或者白色，然后将压缩后的图片转为 <code>base64</code>，直接写入小图的 <code>backgroundImage</code> 即可。由于小图特别小，所以可以通过将小图转为 <code>base64</code>，通过牺牲一点点首屏渲染的时间，使得页面一开始就显示小图背景，跳过显示背景色的阶段。</p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Create-react-app中使用装饰器语法</title>
     <url>/2019/03/01/Create-react-app%E4%B8%AD%E4%BD%BF%E7%94%A8%E8%A3%85%E9%A5%B0%E5%99%A8%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[<h3 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h3><p>想要在 create-react-app 中使用 mobx，因为装饰器模式看起来简单，所以想让 create-react-app 支持装饰器语法。</p>

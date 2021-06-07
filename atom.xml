@@ -6,7 +6,7 @@
   <link href="http://demian1996.github.io/atom.xml" rel="self"/>
   
   <link href="http://demian1996.github.io/"/>
-  <updated>2021-05-30T06:41:13.436Z</updated>
+  <updated>2021-06-07T12:17:40.829Z</updated>
   <id>http://demian1996.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Butterfly主题优化首页大图加载效果</title>
+    <link href="http://demian1996.github.io/2021/06/05/Butterfly%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96%E9%A6%96%E9%A1%B5%E5%A4%A7%E5%9B%BE%E5%8A%A0%E8%BD%BD%E6%95%88%E6%9E%9C/"/>
+    <id>http://demian1996.github.io/2021/06/05/Butterfly%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96%E9%A6%96%E9%A1%B5%E5%A4%A7%E5%9B%BE%E5%8A%A0%E8%BD%BD%E6%95%88%E6%9E%9C/</id>
+    <published>2021-06-05T02:38:22.000Z</published>
+    <updated>2021-06-07T12:17:40.829Z</updated>
+    
+    
+    <summary type="html">Butterfly主题的首页大图很炫酷，但是如果图很大，会造成自上而下的加载效果，很不美观。本文主要是基于medium的图片加载方案，实现首页大图的渐进式加载。</summary>
+    
+    
+    
+    <category term="其他" scheme="http://demian1996.github.io/categories/%E5%85%B6%E4%BB%96/"/>
+    
+    
+    <category term="Hexo" scheme="http://demian1996.github.io/tags/Hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>配置项目ts和hook的eslint约束</title>
