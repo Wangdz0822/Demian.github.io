@@ -312,7 +312,7 @@
     <title>【基于Git hooks搭建前端工作流系列】一、方案选型</title>
     <url>/2021/06/18/%E3%80%90%E5%9F%BA%E4%BA%8EGit%20hooks%E6%90%AD%E5%BB%BA%E5%89%8D%E7%AB%AF%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%B3%BB%E5%88%97%E3%80%91%E4%B8%80%E3%80%81%E6%96%B9%E6%A1%88%E9%80%89%E5%9E%8B/</url>
     <content><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>这是<code>基于Git hooks搭建前端工作流系列</code>的第一篇，该篇主要介绍了功能背景和常见的基于 <code>git hooks</code> 的解决方案。</p>
-<p>整个系列文章的目录如下：<br>一、方案选型：介绍现在主流的自动化方案。<br>二、使用 <code>js</code> 实现简单的 <code>eslint</code> 代码检测：介绍如何利用 <code>nodejs api</code> 做文件 <code>diff</code> 和代码检测。<br>三、引入插件化，集成和定制更多自动化功能：介绍如何将原来的脚本文件进行插件化，方便拓展功能和切换模板。</p>
+<p>整个系列文章的目录如下：<br>一、方案选型：介绍现在主流的自动化方案。<br>二、使用 <code>js</code> 实现代码语法检测：介绍如何利用 <code>nodejs api</code> 做文件 <code>diff</code> 和代码检测。<br>三、引入插件化，集成和定制更多自动化功能：介绍如何将原来的脚本文件进行插件化，方便拓展功能和切换模板。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>以常见的代码评审流程为例：</p>
 <img src="1.png" width="400px" title="代码评审流程" />
 
@@ -336,11 +336,58 @@
 <p>缺点：<br>1、新旧项目都需要花时间接入 <code>husky</code> 和 <code>lint-stage</code> 等配置。</p>
 <h3 id="2、pre-commit"><a href="#2、pre-commit" class="headerlink" title="2、pre-commit"></a>2、pre-commit</h3><p>用法、优缺点同 <code>husky</code> 类似。</p>
 <h3 id="3、原生-js-vscode-插件-命令行工具"><a href="#3、原生-js-vscode-插件-命令行工具" class="headerlink" title="3、原生 js + vscode 插件/命令行工具"></a>3、原生 js + vscode 插件/命令行工具</h3><p><code>git</code> 脚本默认用的是 <code>bash</code> 语法，需要一定的语法基础，对于前端开发人员不是很友好。所以我们可以使用 <code>js</code> 语法实现脚本文件，在这些文件中借助 <code>nodejs api</code> 实现不同的功能。<br>优点：<br>1、用户可以借助 <code>vscode 插件</code>/<code>命令行</code>将脚本文件拷贝到<code>.git/hooks</code>目录下，不用侵入每个项目的 <code>package.json</code>。通过插件可以实现<code>vscode</code>启动后自动为当前工作区的所有仓库注入脚本文件的效果，使得所有项目自动拥有相关功能。<br>2、借助 <code>vscode 插件</code>，可以完成不同自动化配置的动态切换。比如某些项目只用语法检测，某些项目则需要语法检测+<code>commit</code>信息检测+<code>npm</code> 包开源协议检测，此时通过 <code>vscode 插件</code>，就可以通过覆盖 <code>hooks</code> 文件夹的方式达到对不同项目进行适配和动态切换的效果。这个功能会在第三篇文章中介绍到。<br>缺点：<br>1、需要一定的时间开发相应的 <code>git</code> 脚本文件以及 <code>vscode</code> 插件。<br>2、如果不借助 <code>vscode</code> 插件，小组成员之间的配置难以统一管理。</p>
-<h3 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h3><p>本文主要介绍了基于 <code>Git hooks</code> 搭建前端工作流的几种方案。<code>husky</code>+<code>lint-staged</code> 基本能覆盖全部的使用场景，所以是最推荐的一种方案。而在笔者所在的团队，由于开发了一套 <code>vscode</code> 插件，所以笔者采用了第三种方案。<br>因此，在后续的文章中，笔者将逐步介绍如何使用 <code>js</code> 开发 <code>git</code> 脚本文件，并借助<code>vscode</code>插件，实现一套自定义的、可配置的、易拓展的工作流方案。</p>
+<h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><p>本文主要介绍了基于 <code>Git hooks</code> 搭建前端工作流的几种方案。<code>husky</code>+<code>lint-staged</code> 基本能覆盖全部的使用场景，所以是最推荐的一种方案。而在笔者所在的团队，由于开发了一套 <code>vscode</code> 插件，所以笔者采用了第三种方案。<br>因此，在后续的文章中，笔者将逐步介绍如何使用 <code>js</code> 开发 <code>git</code> 脚本文件，并借助<code>vscode</code>插件，实现一套自定义的、可配置的、易拓展的工作流方案。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://juejin.cn/post/6865101730166767623">用「增量」思想提升代码检查和打包构建的效率</a></li>
 <li><a href="https://juejin.cn/post/6845166890373873677">git commit 规范指北</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/115224711">√ 了没？—— 介绍 Git Hooks</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>工程化</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+        <tag>工程化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【基于Git hooks搭建前端工作流系列】二、使用js实现代码语法检测</title>
+    <url>/2021/06/18/%E3%80%90%E5%9F%BA%E4%BA%8EGit%20hooks%E6%90%AD%E5%BB%BA%E5%89%8D%E7%AB%AF%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%B3%BB%E5%88%97%E3%80%91%E4%BA%8C%E3%80%81%E4%BD%BF%E7%94%A8js%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%AF%AD%E6%B3%95%E6%A3%80%E6%B5%8B/</url>
+    <content><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>这是<code>基于Git hooks搭建前端工作流系列</code>的第二篇文章，主要介绍如何使用<code>js</code>实现<code>git</code>脚本文件，完成代码语法检测功能。</p>
+<p>整个系列文章的目录如下：<br>一、方案选型：介绍现在主流的自动化方案。<br>二、使用 <code>js</code> 实现代码语法检测：介绍如何利用 <code>nodejs api</code> 做<code>文件 diff</code> 和<code>代码检测</code>。<br>三、引入插件化，集成和定制更多自动化功能：介绍如何将原来的脚本文件进行插件化，方便拓展功能和切换模板。</p>
+<h2 id="二、脚本解释器简介"><a href="#二、脚本解释器简介" class="headerlink" title="二、脚本解释器简介"></a>二、脚本解释器简介</h2><p>以<code>git</code>提供的默认脚本文件<code>pre-commit.sample</code>的首行代码为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/sh</span><br></pre></td></tr></table></figure>
+
+<p>这行代码用到了<code>Shebang</code>的概念，<code>wiki</code>给出了如下的介绍：</p>
+<blockquote>
+<p>在计算领域中，Shebang（也称为 Hashbang）是一个由井号和叹号构成的字符序列#!，其出现在文本文件的第一行的前两个字符。 在文件中存在 Shebang 的情况下，类 Unix 操作系统的程序加载器会分析 Shebang 后的内容，将这些内容作为解释器指令，并调用该指令，并将载有 Shebang 的文件路径作为该解释器的参数。</p>
+</blockquote>
+<p>从上面的描述可以看出，程序加载器会根据<code>Shebang</code>使用不同的解释器。所以我们开发<code>node</code>脚本时，可以在文件的头部增加对应的指令调用<code>node</code>解释器，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/usr/bin/env node</span><br></pre></td></tr></table></figure>
+
+<p>以打印<code>Hello World</code>为例，我们先新建一个<code>node</code>脚本，命名为 <code>test</code>。将其设置为可执行权限，首行暂时不加<code>#!/usr/bin/env node</code>。此时在 shell 文件中执行 test 文件，会发现执行错误。<br><img src="2.png" alt="错误脚本执行展示"><br>这就是因为不加<code>#!/usr/bin/env node</code>，识别不了<code>js</code>的语法。然后我们加上<code>#!/usr/bin/env node</code>再试试：<br><img src="3.png" alt="正确脚本执行展示"><br>之所以使用<code>/usr/bin/env</code>，是因为不同用户的<code>node</code>解释器会安在不同的目录中，而<code>/usr/bin/env</code>会帮助我们去用户的<code>PATH</code>中依次查找<code>node</code>解释器的路径。</p>
+<h2 id="三、编写-node-版本的语法检测钩子"><a href="#三、编写-node-版本的语法检测钩子" class="headerlink" title="三、编写 node 版本的语法检测钩子"></a>三、编写 node 版本的语法检测钩子</h2><h3 id="1、文件-diff，列出已修改的文件"><a href="#1、文件-diff，列出已修改的文件" class="headerlink" title="1、文件 diff，列出已修改的文件"></a>1、文件 diff，列出已修改的文件</h3><p>在<code>shell</code>中可以通过以下命令，查看暂存区修改的文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">// diff-filter：添加 (A), 赋值 (C), 删除 (D), 修改 (M), 重命名 (R)</span><br><span class="line">git diff --cached --name-only --diff-filter=ACMR</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>--cached</code>：显示暂存区(已 add 但未 commit 的文件)和最后一次 commit ( HEAD )之间的所有不相同文件的增删改。</li>
+<li><code>--name-only</code>：只显示名称。</li>
+<li><code>--diff-filter=ACMR</code>：过滤掉已删除的文件，这些文件不需要做语法检测。</li>
+</ul>
+<p>结合<code>node</code>的<code>api</code>，可以通过以下代码段，手动执行<code>shell</code>命令获取需要进行语法检测的文件名列表。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; exec &#125; = <span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDiffFileList</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    exec(<span class="string">&#x27;git diff --cached --name-only --diff-filter=ACMR&#x27;</span>, <span class="function">(<span class="params">error, stdout</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (error) &#123;</span><br><span class="line">        reject(<span class="string">`exec error: <span class="subst">$&#123;error&#125;</span>`</span>);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      resolve(stdout.split(<span class="string">&#x27;\n&#x27;</span>).filter(<span class="function">(<span class="params">diffFile</span>) =&gt;</span> <span class="regexp">/(\.js|\.jsx|\.ts|\.tsx)(\n|$)/gi</span>.test(diffFile)));</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">getDiffFileList().then(<span class="built_in">console</span>.log);</span><br></pre></td></tr></table></figure>
+
+<p><code>demo</code>仓库的文件修改状况如下所示：<br><img src="7.png" alt="result"><br>执行<code>shell</code>命令后的打印结果如下：<br><img src="6.png" alt="diff"></p>
+<h3 id="2、eslint-检测文件"><a href="#2、eslint-检测文件" class="headerlink" title="2、eslint 检测文件"></a>2、eslint 检测文件</h3><p><img src="https://eslint.org/docs/developer-guide/nodejs-api#eslint-class" alt="Eslint">提供了<code>lintFiles</code>方法检测文件，我们将从上面程序中获取到的文件数组传给该方法，即可调用<code>eslint</code>进行语法检测。代码如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; ESLint &#125; = <span class="built_in">require</span>(<span class="string">&#x27;eslint&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description </span>调用eslint api</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">lintFiles</span>(<span class="params">fileList</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> eslint = <span class="keyword">new</span> ESLint();</span><br><span class="line">  <span class="keyword">return</span> eslint.lintFiles(fileList);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description </span>整合并打印结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">output</span>(<span class="params">resultList</span>) </span>&#123;</span><br><span class="line">  resultList.forEach(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (result.messages &amp;&amp; result.messages.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="built_in">console</span>.error(<span class="string">`ESLint has found problems in file: <span class="subst">$&#123;result.filePath&#125;</span>`</span>);</span><br><span class="line">      result.messages.forEach(<span class="function">(<span class="params">msg</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (msg.severity === <span class="number">2</span>) &#123;</span><br><span class="line">          <span class="built_in">console</span>.error(<span class="string">`Error: <span class="subst">$&#123;msg.message&#125;</span> in Line <span class="subst">$&#123;msg.line&#125;</span> Column <span class="subst">$&#123;msg.column&#125;</span>`</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="built_in">console</span>.warn(<span class="string">`Warning: <span class="subst">$&#123;msg.message&#125;</span> in Line <span class="subst">$&#123;msg.line&#125;</span> Column <span class="subst">$&#123;msg.column&#125;</span>`</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">getDiffFileList().then(lintFiles).then(output);</span><br></pre></td></tr></table></figure>
+
+<p>最终打印结果如下：<br><img src="8.png" alt="result"></p>
+<h3 id="3、增加-Shebang"><a href="#3、增加-Shebang" class="headerlink" title="3、增加 Shebang"></a>3、增加 Shebang</h3><p>首先，我们新建一份与<code>git hooks</code>的<code>pre-commit</code>钩子同名的<code>pre-commit</code>文件，注意该文件没有后缀。然后在<code>shell</code>中调用<code>chmod 777 pre-commit</code>将该文件设置为可执行文件，并在首行增加<code>#!/usr/bin/env node</code>。最后，我们将这段加了<code>#!/usr/bin/env node</code>的脚本拷贝到<code>git</code>仓库的<code>.git/hooks</code>目录中，就算大功告成了。<br>我们之后的每次提交，<code>git</code>都会触发该脚本对我们改动的文件进行语法检测。<br>最终的代码见 gist: <a href="https://gist.github.com/Demian1996/d0dc27d08b38943cdb4eea212690c363#file-pre-commit">语法检测脚本</a></p>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>本文主要介绍了如何使用<code>js</code>实现<code>git</code>脚本文件，完成代码语法检测功能。同理，我们也可以使用<code>js</code>实现<code>commit 信息检测</code>，<code>npm packages 协议风险检测</code>等功能。<br>由于笔者团队没有使用<code>husky</code>，而是采用上述的<strong>脚本文件 + vscode 插件注入的方式</strong>（详细见该系列文章的第一篇）。随着业务的不断迭代，后续的开发者在维护脚本文件时，出现了维护困难、拓展困难的问题。在下一篇文章中，笔者将介绍如何使用插件化，来隔离<strong>开发功能插件</strong>和<strong>组装 git 钩子业务</strong>的关注点，并通过 vscode 插件实现动态切换当前项目需要使用的 git 钩子。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://juejin.cn/post/6865101730166767623">用「增量」思想提升代码检查和打包构建的效率</a></li>
 </ul>
 ]]></content>
       <categories>
